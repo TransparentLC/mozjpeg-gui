@@ -30,6 +30,4 @@
     * “基本式”（baseline），图片从上至下逐渐显示。
     * “渐进式”（progressive），图片从模糊逐渐变清晰。
     * “渐进式”又可以继续分为“交错式”（interleaved）和“非交错式”（non-interleaved）。在加载模糊部分时，前者同时加载所有色彩通道；后者先加载亮度通道再加载色度通道，表现为先显示黑白图片，再逐渐向图片上添加颜色。一般情况下“非交错式”的图片文件大小要略微小于“交错式”。
-    * 不同格式的图片在加载过程中的具体效果可以参考下面的视频。录制此视频时使用了 Firefox 的开发者工具模拟在低速网络环境下打开图片的情景。
-
-<video src="https://files.catbox.moe/8derzy.mp4" poster="https://ae01.alicdn.com/kf/HTB1CaBrd81D3KVjSZFyq6zuFpXaB.jpg" controls preload="metadata"></video>
+    * 使用了 Firefox 的开发者工具[模拟在低速网络环境下打开图片的视频](https://files.catbox.moe/8derzy.mp4)，展示了不同格式的图片在加载过程中的具体效果。
