@@ -30,30 +30,46 @@
             <ScrollViewer x:Name="ScrollViewer_Picturebox" Margin="10,10,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Image x:Name="Image_PictureBox" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0" Stretch="Fill" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Width="0" Height="0"/>
             </ScrollViewer>
-            <Label x:Name="Label_ImageInfo" Margin="10,10,0,10" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI v1.0 by ✨小透明・宸✨"/>
+            <Label x:Name="Label_ImageInfo" Margin="10,10,0,10" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI v1.1 by ✨小透明・宸✨"/>
         </Grid>
-        <Label x:Name="Label_Title" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI" FontSize="24" MouseDown="Label_Title_MouseDown"/>
+        <Label Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI" FontSize="24"/>
         <Button x:Name="Button_OpenImage" Content="打开图片" Grid.Column="1" Margin="10,55,0,0" VerticalAlignment="Top" Click="Button_OpenImage_Click" Width="112.5" HorizontalAlignment="Left"/>
-        <GroupBox Grid.Column="1" Header="编码设定" Margin="10,83,10,0" VerticalAlignment="Top">
+        <Button x:Name="Button_OpenDirectory" Content="批处理" Grid.Column="1" Margin="0,55,10,0" VerticalAlignment="Top" Click="Button_OpenDirectory_Click" ToolTip="以当前的编码和缩放设定，对某个目录下的文件进行批量转换。" Width="112.5" HorizontalAlignment="Right"/>
+        <Button x:Name="Button_Readme" Content="查看使用说明 / GitHub仓库" Grid.Column="1" Margin="10,82,10,0" VerticalAlignment="Top" Width="230" HorizontalAlignment="Center" Click="Button_Readme_Click"/>
+        <GroupBox Grid.Column="1" Header="编码设定" Margin="10,109,10,0" VerticalAlignment="Top" Height="231">
             <Grid Margin="5">
                 <Label Content="图片质量" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 <Label Content="{Binding Value, ElementName=Slider_Quality}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0"/>
-                <Slider x:Name="Slider_Quality" Margin="0,27.78,0,0" VerticalAlignment="Top" Maximum="100" Value="75" LargeChange="5" SmallChange="1" ValueChanged="Slider_Quality_ValueChanged" ToolTip="0为最差，100为最好。更好质量的图片文件大小也更大。"/>
+                <Slider x:Name="Slider_Quality" Margin="0,27.78,0,0" VerticalAlignment="Top" Maximum="100" Value="75" LargeChange="5" SmallChange="1" ValueChanged="Slider_Quality_ValueChanged" ToolTip="设定编码图片的质量，0为最差，100为最好。&#10;更好质量的图片文件大小也更大，且编码时间更长。&#10;&#10;质量的数值仅供参考，不能精确地表示图片实际质量。&#10;因为即使设定的质量值保持不变，选用的量化表不同也会导致编码后的图片质量出现细微差别。"/>
                 <Label Content="平滑" Margin="0,50.78,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 <Label Content="{Binding Value, ElementName=Slider_Smooth}" HorizontalAlignment="Right" Margin="0,50.78,0,0" VerticalAlignment="Top"/>
-                <Slider x:Name="Slider_Smooth" Margin="0,78.56,0,0" VerticalAlignment="Top" Maximum="100" SmallChange="1" LargeChange="5" ValueChanged="Slider_Smooth_ValueChanged" ToolTip="对图片进行一定程度的模糊，减少编码后图片的不自然感，轻微降低文件大小。"/>
-                <CheckBox x:Name="CheckBox_Progressive" Content="渐进式" Margin="0,101.56,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsChecked="True" ToolTip="渐进式JPEG图片用于网页时，在加载过程中会从模糊的完整图像逐渐变清晰。"/>
-                <CheckBox x:Name="CheckBox_Grayscale" Content="去色" Margin="0,123.34,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalAlignment="Left" Checked="CheckBox_Grayscale_Checked" Unchecked="CheckBox_Grayscale_Checked" ToolTip="去除色度数据，只保留亮度数据。"/>
-                <Label x:Name="label" Content="颜色格式" Margin="0,145.12,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <ComboBox x:Name="ComboBox_SampleFormat" HorizontalAlignment="Right" Margin="0,145.12,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label}" VerticalContentAlignment="Center" ToolTip="存储颜色数据的格式。一般不使用RGB，对于照片建议使用YUV 4:2:0，对于屏幕截图建议使用YUV 4:4:4。">
+                <Slider x:Name="Slider_Smooth" Margin="0,78.56,0,0" VerticalAlignment="Top" Maximum="100" SmallChange="1" LargeChange="5" ValueChanged="Slider_Smooth_ValueChanged" ToolTip="设定编码时对图片进行模糊的程度，设为0则不使用。&#10;可以减少编码后图片的不自然感，也可以轻微降低文件大小。"/>
+                <Label x:Name="label_Copy3" Content="图片格式" Margin="0,101.56,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <ComboBox x:Name="ComboBox_ImageFormat" HorizontalAlignment="Right" Margin="0,101.56,0,0" VerticalAlignment="Top" SelectedIndex="2" Height="{Binding ActualHeight, ElementName=label}" VerticalContentAlignment="Center" ToolTip="编码图片数据的格式。&#10;不同的格式影响编码后的文件大小和在网页上加载图片过程中的显示效果，但不会影响图片质量。" MaxWidth="135">
+                    <ComboBoxItem Content="基本式" ToolTip="在加载图片时，图片从上至下逐渐显示。"/>
+                    <ComboBoxItem Content="渐进式（去色）" ToolTip="在加载图片时，图片显示从模糊逐渐变清晰。&#10;注意：编码的图片已被去色，只保留了亮度部分。"/>
+                    <ComboBoxItem Content="渐进式（交错）" ToolTip="在加载图片时，图片显示从模糊逐渐变清晰。"/>
+                    <ComboBoxItem Content="渐进式（非交错）" ToolTip="在加载图片时，先显示模糊的亮度部分，再逐渐显示清晰的彩色图片。&#10;此格式得到的文件大小最小。"/>
+                </ComboBox>
+                <Label x:Name="label" Content="颜色格式" Margin="0,135.66,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <ComboBox x:Name="ComboBox_SampleFormat" HorizontalAlignment="Right" Margin="0,135.66,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label}" VerticalContentAlignment="Center" ToolTip="颜色数据采样的格式。&#10;对于照片建议使用YUV 4:2:0，对于屏幕截图建议使用YUV 4:4:4，一般不使用RGB。" MaxWidth="135">
                     <ComboBoxItem Content="YUV 4:2:0"/>
                     <ComboBoxItem Content="YUV 4:2:2"/>
                     <ComboBoxItem Content="YUV 4:4:4"/>
                     <ComboBoxItem Content="RGB"/>
                 </ComboBox>
+                <Label x:Name="label_Copy2" Content="量化表" Margin="0,168.44,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <ComboBox x:Name="ComboBox_QuantTable" HorizontalAlignment="Right" Margin="0,168.44,0,0" VerticalAlignment="Top" SelectedIndex="3" Height="{Binding ActualHeight, ElementName=label}" VerticalContentAlignment="Center" ToolTip="编码图片时使用的量化表。&#10;使用不同的量化表编码后的图片质量和文件大小可能会有细微差别。" MaxWidth="135">
+                    <ComboBoxItem Content="JPEG Annex K"/>
+                    <ComboBoxItem Content="Flat"/>
+                    <ComboBoxItem Content="Custom, tuned for MS-SSIM"/>
+                    <ComboBoxItem Content="ImageMagick table by N. Robidoux"/>
+                    <ComboBoxItem Content="Custom, tuned for PSNR-HVS"/>
+                    <ComboBoxItem Content="Table from paper by Klein, Silverstein and Carney"/>
+                </ComboBox>
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Column="1" Header="缩放设定" Margin="10,296,10,0" VerticalAlignment="Top" Height="215">
+        <GroupBox Grid.Column="1" Header="缩放设定" Margin="10,345,10,0" VerticalAlignment="Top" Height="215">
             <Grid Margin="5">
                 <Label x:Name="label1" Content="宽度" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <TextBox x:Name="TextBox_Width" InputMethod.PreferredImeState="Off" HorizontalAlignment="Right" Text="1920" VerticalAlignment="Top" Height="{Binding ActualHeight, ElementName=label1}" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Width="151" MaxLines="1" PreviewTextInput="NumericCheckWithoutDot" TextChanged="TextBox_Width_TextChanged"/>
@@ -64,20 +80,20 @@
                 <TextBox x:Name="TextBox_Scale" InputMethod.PreferredImeState="Off" HorizontalAlignment="Right" Text="100" VerticalAlignment="Top" Height="{Binding ActualHeight, ElementName=label1_Copy1}" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Width="123.543" Margin="0,65.56,27.457,0" MaxLines="1" PreviewTextInput="NumericCheckWithDot" TextChanged="TextBox_Scale_TextChanged"/>
                 <Label Content="%" HorizontalAlignment="Left" Margin="185.543,65.56,0,0" VerticalAlignment="Top" Height="{Binding ActualHeight, ElementName=label1_Copy1}"/>
                 <Label x:Name="label_Copy" Content="缩放算法" Margin="-0.001,98.34,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <ComboBox x:Name="ComboBox_Interpolation" HorizontalAlignment="Right" Margin="0,98.34,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label_Copy}" VerticalContentAlignment="Center">
+                <ComboBox x:Name="ComboBox_Interpolation" HorizontalAlignment="Right" Margin="0,98.34,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label_Copy}" VerticalContentAlignment="Center" MaxWidth="120">
                     <ComboBoxItem Content="双三次插值" ToolTip="侧重于保留图片细节的缩放算法。"/>
                     <ComboBoxItem Content="双线性插值" ToolTip="使缩放后的图片更加平滑的缩放算法。"/>
                     <ComboBoxItem Content="临近插值" ToolTip="速度最快的缩放算法，但缩放后的图片质量最低。"/>
                 </ComboBox>
                 <Label x:Name="label_Copy1" Content="批处理" Margin="0,131,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <ComboBox x:Name="ComboBox_Batch" HorizontalAlignment="Right" Margin="0,131,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label_Copy1}" VerticalContentAlignment="Center">
-                    <ComboBoxItem Content="按百分比缩放" ToolTip="侧重于保留图片细节的缩放算法。"/>
-                    <ComboBoxItem Content="等比例缩放至宽度" ToolTip="使缩放后的图片更加平滑的缩放算法。"/>
-                    <ComboBoxItem Content="等比例缩放至高度" ToolTip="速度最快的缩放算法，但缩放后的图片质量最低。"/>
+                <ComboBox x:Name="ComboBox_Batch" HorizontalAlignment="Right" Margin="0,131,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label_Copy1}" VerticalContentAlignment="Center" MaxWidth="120">
+                    <ComboBoxItem Content="按百分比缩放"/>
+                    <ComboBoxItem Content="等比例缩放至宽度"/>
+                    <ComboBoxItem Content="等比例缩放至高度"/>
                 </ComboBox>
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Column="1" Header="预览" Margin="10,516,10,0" VerticalAlignment="Top">
+        <GroupBox Grid.Column="1" Header="预览" Margin="10,565,10,0" VerticalAlignment="Top">
             <Grid Margin="5">
                 <Label x:Name="label1_Copy2" Content="显示比例" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,54,0,0"/>
                 <Label Content="%" HorizontalAlignment="Left" Margin="186,54,0,-27" VerticalAlignment="Top" Height="{Binding ActualHeight, ElementName=label1_Copy2}"/>
@@ -98,7 +114,5 @@
                 <Button x:Name="Button_Source" Content="显示原图" VerticalAlignment="Top" Click="Button_Source_Click" Margin="0,27,0,0"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="Button_OpenDirectory" Content="批处理" Grid.Column="1" Margin="0,55,10,0" VerticalAlignment="Top" Click="Button_OpenDirectory_Click" ToolTip="以当前的编码和缩放设定，对某个目录下的文件进行批量转换。" Width="112.5" HorizontalAlignment="Right"/>
-
     </Grid>
 </Window>

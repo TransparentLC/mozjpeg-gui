@@ -172,28 +172,47 @@ namespace mozjpeg_gui
 			PreviewPath = Path.GetTempPath() + "tmp" + GetRandomString(4) + ".jpg";
 
 			string sample = "";
-			switch (ComboBox_SampleFormat.SelectedIndex)
+            string image = " -optimize ";
+
+            switch (ComboBox_SampleFormat.SelectedIndex)
 			{
-				case 0:
+				case 0: //yuv420
 					sample = " -sample 2x2 ";
 					break;
-				case 1:
+				case 1: //yuv422
 					sample = " -sample 2x1 ";
 					break;
-				case 2:
+				case 2: //yuv444
 					sample = " -sample 1x1 ";
 					break;
-				case 3:
+				case 3: //rgb
 					sample = " -rgb ";
 					break;
 			}
+            switch (ComboBox_ImageFormat.SelectedIndex)
+            {
+                case 0: //baseline
+                    image += "-baseline";
+                    break;
+                case 1: //progressive grayscale
+                    image += "-progressive -greyscale";
+                    break;
+                case 2: //progressive non-interleaved
+                    image += "-progressive -dc-scan-opt 0";
+                    break;
+                case 3: //progressive interleaved
+                    image += "-progressive -dc-scan-opt 2";
+                    break;
+            }
+
 			Process process = new Process();
             process.StartInfo.FileName = CjpegPath;
             process.StartInfo.Arguments = "-quality " + Slider_Quality.Value.ToString() +
 									" -smooth " +Slider_Smooth.Value +
-									((bool)CheckBox_Progressive.IsChecked ? " -progressive " : " -baseline ") +
-									((bool)CheckBox_Grayscale.IsChecked ? " -grayscale " : sample) +
-									" -outfile \"" + PreviewPath +
+                                    image +
+                                    sample +
+                                    " -quant-table " + ComboBox_QuantTable.SelectedIndex +
+                                    " -outfile \"" + PreviewPath +
 									"\" \"" +
 									ImageResizedPath + "\"";
             process.StartInfo.UseShellExecute = false;
@@ -379,11 +398,6 @@ namespace mozjpeg_gui
 			}
 		}
 
-		private void CheckBox_Grayscale_Checked(object sender, RoutedEventArgs e)
-		{
-			ComboBox_SampleFormat.IsEnabled = !(bool)CheckBox_Grayscale.IsChecked;
-		}
-
 		private void Button_Preview_Click(object sender, RoutedEventArgs e)
 		{
 			if (ImagePath == "")
@@ -422,8 +436,10 @@ namespace mozjpeg_gui
 
         private void Button_OpenDirectory_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.FolderBrowserDialog browserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            browserDialog.Description = "选择要进行批处理的文件夹。";
+            System.Windows.Forms.FolderBrowserDialog browserDialog = new System.Windows.Forms.FolderBrowserDialog
+            {
+                Description = "选择要进行批处理的文件夹。"
+            };
             if (browserDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
             {
                 return;
@@ -489,27 +505,46 @@ namespace mozjpeg_gui
                 SaveResizedBMPImage(BatchImagePath, BatchImageResizedPath, interpolation, width, height);
 
                 string sample = "";
+                string image = " -optimize ";
+
                 switch (ComboBox_SampleFormat.SelectedIndex)
                 {
-                    case 0:
+                    case 0: //yuv420
                         sample = " -sample 2x2 ";
                         break;
-                    case 1:
+                    case 1: //yuv422
                         sample = " -sample 2x1 ";
                         break;
-                    case 2:
+                    case 2: //yuv444
                         sample = " -sample 1x1 ";
                         break;
-                    case 3:
+                    case 3: //rgb
                         sample = " -rgb ";
                         break;
                 }
+                switch (ComboBox_ImageFormat.SelectedIndex)
+                {
+                    case 0: //baseline
+                        image += "-baseline";
+                        break;
+                    case 1: //progressive grayscale
+                        image += "-progressive -greyscale";
+                        break;
+                    case 2: //progressive non-interleaved
+                        image += "-progressive -dc-scan-opt 0";
+                        break;
+                    case 3: //progressive interleaved
+                        image += "-progressive -dc-scan-opt 2";
+                        break;
+                }
+
                 Process process = new Process();
                 process.StartInfo.FileName = CjpegPath;
                 process.StartInfo.Arguments = "-quality " + Slider_Quality.Value.ToString() +
                                         " -smooth " + Slider_Smooth.Value +
-                                        ((bool)CheckBox_Progressive.IsChecked ? " -progressive " : " -baseline ") +
-                                        ((bool)CheckBox_Grayscale.IsChecked ? " -grayscale " : sample) +
+                                        image +
+                                        sample +
+                                        " -quant-table " + ComboBox_QuantTable.SelectedIndex +
                                         " -outfile \"" + browserDialog.SelectedPath + "\\mozjpeg-converted\\" + Path.GetFileNameWithoutExtension(file.Name) +
                                         ".jpg\" \"" +
                                         BatchImageResizedPath + "\"";
@@ -530,7 +565,7 @@ namespace mozjpeg_gui
             MessageBox.Show("批量转换完成！\n转换后的文件保存在转换目录的mozjpeg-converted文件夹中。", this.Title, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void Label_Title_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Button_Readme_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://github.com/TransparentLC/mozjpeg-gui");
         }
