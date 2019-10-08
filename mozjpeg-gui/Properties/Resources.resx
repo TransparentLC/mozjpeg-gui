@@ -121,4 +121,10 @@
   <data name="cjpeg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\cjpeg.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="cwebp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\cwebp.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dwebp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\dwebp.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
