@@ -19,6 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button x:Name="Button_SaveImage" Content="保存图片" Margin="10,0,10,10" Grid.Column="1" VerticalAlignment="Bottom" Click="Button_SaveImage_Click"/>
+        <Button x:Name="Button_UploadImage" Content="上传到图床" Margin="10,0,10,37" Grid.Column="1" VerticalAlignment="Bottom" Click="Button_UploadImage_Click" ToolTip="将压缩后的图片上传到ae01.alicdn.com。&#xA;WebP格式的图片需要将文件扩展名修改为常见图片格式后才能上传，因此返回的链接仍然以“.jpg”结尾。"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -30,10 +31,10 @@
             <ScrollViewer x:Name="ScrollViewer_Picturebox" Margin="10,10,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Image x:Name="Image_PictureBox" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0" Stretch="Fill" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Width="0" Height="0"/>
             </ScrollViewer>
-            <Label x:Name="Label_ImageInfo" Margin="10,10,0,10" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI v1.2 by ✨小透明・宸✨"/>
+            <Label x:Name="Label_ImageInfo" Margin="10,10,0,10" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI v1.3 by ✨小透明・宸✨"/>
         </Grid>
         <Label Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI" FontSize="24"/>
-        <Button x:Name="Button_OpenImage" Content="打开图片" Grid.Column="1" Margin="10,55,0,0" VerticalAlignment="Top" Click="Button_OpenImage_Click" Width="112.5" HorizontalAlignment="Left"/>
+        <Button x:Name="Button_OpenImage" Content="打开图片" Grid.Column="1" Margin="10,55,0,0" VerticalAlignment="Top" Click="Button_OpenImage_Click" Width="112" HorizontalAlignment="Left"/>
         <Button x:Name="Button_OpenDirectory" Content="批处理" Grid.Column="1" Margin="0,55,10,0" VerticalAlignment="Top" Click="Button_OpenDirectory_Click" ToolTip="以当前的编码和缩放设定，对某个目录下的文件进行批量转换。" Width="112.5" HorizontalAlignment="Right"/>
         <Button x:Name="Button_Readme" Content="查看使用说明 / GitHub仓库" Grid.Column="1" Margin="10,81.78,10,0" VerticalAlignment="Top" Width="230" HorizontalAlignment="Center" Click="Button_Readme_Click"/>
         <GroupBox x:Name="GroupBox_MozJPEG_Config" Grid.Column="1" Header="编码设定" Margin="10,141.34,10,0" VerticalAlignment="Top" Height="231">
@@ -84,7 +85,7 @@
                 <Slider x:Name="Slider_libWebP_Quality" Margin="0,27.78,0,0" VerticalAlignment="Top" Maximum="100" Value="75" LargeChange="5" SmallChange="1" ValueChanged="Slider_libWebP_Quality_ValueChanged" ToolTip="设定有损或无损编码图片的质量，0为最差，100为最好。&#xA;对于有损编码，更好质量的图片文件大小也更大，且编码时间更长。&#xA;对于无损编码，较低的质量可以加快压缩速度，但会产生较大的文件。" Grid.ColumnSpan="2"/>
                 <Label Content="滤波（仅有损编码）" Margin="0,51,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2"/>
                 <Label Content="{Binding Value, ElementName=Slider_libWebP_Filter}" HorizontalAlignment="Right" Margin="0,50.78,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                <Slider x:Name="Slider_libWebP_Filter" Margin="0,78.56,0,0" VerticalAlignment="Top" Maximum="100" SmallChange="1" LargeChange="5" ValueChanged="Slider_libWebP_Filter_ValueChanged" ToolTip="对图块的边界进行平滑的强度，不影响文件大小。" Grid.ColumnSpan="2"/>
+                <Slider x:Name="Slider_libWebP_Filter" Margin="0,78.56,0,0" VerticalAlignment="Top" Maximum="100" SmallChange="1" LargeChange="5" ValueChanged="Slider_libWebP_Filter_ValueChanged" ToolTip="对图块的边界进行平滑的强度，不影响文件大小。" Grid.ColumnSpan="2" Value="20"/>
                 <Label x:Name="label_Copy4" Content="预设（仅有损编码）" Margin="0,101.56,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="2"/>
                 <ComboBox x:Name="ComboBox_libWebP_Preset" HorizontalAlignment="Right" Margin="0,101.56,0,0" VerticalAlignment="Top" SelectedIndex="0" Height="{Binding ActualHeight, ElementName=label_Copy4}" VerticalContentAlignment="Center" ToolTip="使用适用于特定类型图片的预设，会覆盖所有仅适用于有损编码的设定。" MaxWidth="135" Grid.Column="1">
                     <ComboBoxItem Content="不使用"/>
@@ -125,9 +126,9 @@
         </GroupBox>
         <GroupBox Grid.Column="1" Header="预览" Margin="10,597.34,10,0" VerticalAlignment="Top">
             <Grid Margin="5">
-                <Label x:Name="label1_Copy2" Content="显示比例" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,54,0,0"/>
-                <Label Content="%" HorizontalAlignment="Left" Margin="186,54,0,-27" VerticalAlignment="Top" Height="{Binding ActualHeight, ElementName=label1_Copy2}"/>
-                <ComboBox x:Name="ComboBox_PreviewScale" HorizontalAlignment="Right" Margin="0,54,27,-27" VerticalAlignment="Top" SelectedIndex="3" Height="{Binding ActualHeight, ElementName=label1_Copy2}" VerticalContentAlignment="Center" DropDownClosed="ComboBox_PreviewScale_DropDownClosed">
+                <Label x:Name="label1_Copy2" Content="显示比例" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,27,0,0"/>
+                <Label Content="%" HorizontalAlignment="Left" Margin="186,27,0,0" VerticalAlignment="Top" Height="{Binding ActualHeight, ElementName=label1_Copy2}"/>
+                <ComboBox x:Name="ComboBox_PreviewScale" HorizontalAlignment="Right" Margin="0,27,27,0" VerticalAlignment="Top" SelectedIndex="3" Height="{Binding ActualHeight, ElementName=label1_Copy2}" VerticalContentAlignment="Center" DropDownClosed="ComboBox_PreviewScale_DropDownClosed">
                     <ComboBoxItem Content="800"/>
                     <ComboBoxItem Content="400"/>
                     <ComboBoxItem Content="200"/>
@@ -140,8 +141,8 @@
                     <ComboBoxItem Content="12.5"/>
                     <ComboBoxItem Content="10"/>
                 </ComboBox>
-                <Button x:Name="Button_Preview" Content="生成预览" VerticalAlignment="Top" Click="Button_Preview_Click"/>
-                <Button x:Name="Button_Source" Content="显示原图" VerticalAlignment="Top" Click="Button_Source_Click" Margin="0,27,0,0"/>
+                <Button x:Name="Button_Preview" Content="生成预览" VerticalAlignment="Top" Click="Button_Preview_Click" Margin="0,0,107,0"/>
+                <Button x:Name="Button_Source" Content="显示原图" VerticalAlignment="Top" Click="Button_Source_Click" Margin="107,0,0,0"/>
             </Grid>
         </GroupBox>
         <Label x:Name="label_Copy5" Content="编码工具" Margin="10,108.56,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1"/>

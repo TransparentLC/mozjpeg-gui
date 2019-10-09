@@ -1,9 +1,12 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Json;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -350,6 +353,7 @@ namespace mozjpeg_gui
 			if (ImagePath == "") return;
 			if (ImageResizedPath == "") CreateResizedImage();
 			PreviewImage();
+
 			SaveFileDialog fileDialog = new SaveFileDialog
 			{
 				InitialDirectory = Directory.GetCurrentDirectory(),
@@ -369,7 +373,67 @@ namespace mozjpeg_gui
 			File.WriteAllBytes(fileDialog.FileName, File.ReadAllBytes(PreviewPath));
 		}
 
-		private void Slider_MozJPEG_Quality_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void Button_UploadImage_Click(object sender, RoutedEventArgs e)
+        {
+            if (ImagePath == "") return;
+            if (ImageResizedPath == "") CreateResizedImage();
+            PreviewImage();
+
+            // string uploadPath = "";
+            // switch (ComboBox_Tool.SelectedIndex)
+            // {
+            //     case 0: // mozjpeg
+            //         uploadPath = PreviewPath;
+            //         break;
+            //     case 1: // libwebp
+            //         uploadPath = Path.ChangeExtension(PreviewPath, ".jpg");
+            //         File.Move(PreviewPath, uploadPath);
+            //         break;
+            // }
+
+            Dictionary<string, object> postParam = new Dictionary<string, object>
+            {
+                { "scene", "aeMessageCenterV2ImageRule" },
+                { "name", Path.GetFileName(Path.ChangeExtension(PreviewPath, ".jpg")) },
+                { "file", new FormUpload.FileParameter(File.ReadAllBytes(PreviewPath)) }
+            };
+
+            HttpWebResponse response;
+            try
+            {
+                response = FormUpload.MultipartFormDataPost(
+                    "https://kfupload.alibaba.com/mupload",
+                    "iAliexpress/6.22.1 (iPhone; iOS 12.1.2; Scale/2.00)",
+                    postParam
+                );
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("无法连接到服务器，请检查网络连接。", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            StreamReader reader = new StreamReader(response.GetResponseStream());
+            string responseText = reader.ReadToEnd();
+            reader.Dispose();
+
+            JsonObject responseKeyValues = JsonValue.Parse(responseText) as JsonObject;
+
+            if (responseKeyValues["code"] == 0)
+            {
+                if (MessageBox.Show("上传成功！\r\n" + responseKeyValues["url"] + "\r\n\r\n是否要将链接复制到剪贴板？", "", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes) 
+                {
+                    Clipboard.SetText(responseKeyValues["url"]);
+                }
+            }
+            else
+            {
+                MessageBox.Show("上传失败。", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+        }
+
+        private void Slider_MozJPEG_Quality_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
             Slider_MozJPEG_Quality.Value = (int)Slider_MozJPEG_Quality.Value;
 		}
@@ -537,6 +601,7 @@ namespace mozjpeg_gui
             }
 
             MessageBox.Show("批量转换完成！\n转换后的文件保存在转换目录的mozjpeg-converted文件夹中。", this.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+            browserDialog.Dispose();
         }
 
         private void Button_Readme_Click(object sender, RoutedEventArgs e)
