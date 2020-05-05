@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button x:Name="Button_SaveImage" Content="保存图片" Margin="10,0,10,10" Grid.Column="1" VerticalAlignment="Bottom" Click="Button_SaveImage_Click"/>
-        <Button x:Name="Button_UploadImage" Content="上传到图床" Margin="10,0,10,37" Grid.Column="1" VerticalAlignment="Bottom" Click="Button_UploadImage_Click" ToolTip="将压缩后的图片上传到ae01.alicdn.com。&#xA;WebP格式的图片需要将文件扩展名修改为常见图片格式后才能上传，因此返回的链接仍然以“.jpg”结尾。"/>
+        <Button x:Name="Button_UploadImage" Content="上传到图床" Margin="10,0,10,37" Grid.Column="1" VerticalAlignment="Bottom" Click="Button_UploadImage_Click" ToolTip="将压缩后的图片上传到yzf.qq.com。&#xA;WebP格式的图片需要将文件扩展名修改为常见图片格式后才能上传，因此返回的链接仍然以“.jpg”结尾。"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

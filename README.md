@@ -31,5 +31,5 @@
     * “渐进式”又可以继续分为“交错式”（interleaved）和“非交错式”（non-interleaved）。在加载模糊部分时，前者同时加载所有色彩通道；后者先加载亮度通道再加载色度通道，表现为先显示黑白图片，再逐渐向图片上添加颜色。一般情况下“非交错式”的图片文件大小要略微小于“交错式”。
     * 使用了 Firefox 的开发者工具[模拟在低速网络环境下打开图片的视频](https://files.catbox.moe/8derzy.mp4)，展示了不同格式的图片在加载过程中的具体效果。
 * WebP 图片格式的设定，包括是否使用无损编码、设定滤波强度等等，参见 [Google 官方说明](https://developers.google.com/speed/webp/docs/cwebp)。
-* 图片**一键上传**：将压缩后的图片上传到 `ae01.alicdn.com`。
-    * [非公开图床](https://blog.cmcncm.cn/2019/03/26/image-hosting/#%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4)之一，速度不错，而且支持上传 WebP 格式的图片（但是需要将扩展名修改为 `.jpg` 进行“伪装”……），点击[这里](https://ae01.alicdn.com/kf/H963e272097924684a2ad9c2d8d731be9f.jpg)查看示例。
+* 图片**一键上传**：将压缩后的图片上传到 ~~`ae01.alicdn.com`~~（换了另外一个图床）。
+    * [非公开图床](https://blog.cmcncm.cn/2019/03/26/image-hosting/#%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4)之一，速度不错，而且支持上传 WebP 格式的图片（但是需要将扩展名修改为 `.jpg` 进行“伪装”……），点击[这里](https://yzf.qq.com/fsnb/kf-file/kf_pic/20200505/KFPIC_dC_WXIMAGE_kBrALQhmvbGDICWIenpW.jpg)查看示例。
