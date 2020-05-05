@@ -7,7 +7,10 @@ using System.IO;
 using System.Json;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Channels;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -102,7 +105,7 @@ namespace mozjpeg_gui
                 BitmapEncoder encoder = new BmpBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(new Uri(source)));
 
-                using (var fileStream = new System.IO.FileStream(destination, FileMode.Create))
+                using (var fileStream = new FileStream(destination, FileMode.Create))
                 {
                     encoder.Save(fileStream);
                 }
@@ -391,20 +394,28 @@ namespace mozjpeg_gui
             //         break;
             // }
 
-            Dictionary<string, object> postParam = new Dictionary<string, object>
-            {
-                { "scene", "aeMessageCenterV2ImageRule" },
-                { "name", Path.GetFileName(Path.ChangeExtension(PreviewPath, ".jpg")) },
-                { "file", new FormUpload.FileParameter(File.ReadAllBytes(PreviewPath)) }
-            };
-
             HttpWebResponse response;
             try
             {
+                string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                StringBuilder useridBuilder = new StringBuilder();
+                Random random = new Random();
+                useridBuilder.Append("kf");
+                for (int i = 0; i < 16; i++) useridBuilder.Append(chars[random.Next(chars.Length)]);
+                useridBuilder.Append("_");
+                for (int i = 0; i < 2; i++) useridBuilder.Append(chars[random.Next(chars.Length)]);
+                string userid = useridBuilder.ToString();
+                
                 response = FormUpload.MultipartFormDataPost(
-                    "https://kfupload.alibaba.com/mupload",
-                    "iAliexpress/6.22.1 (iPhone; iOS 12.1.2; Scale/2.00)",
-                    postParam
+                    "https://yzf.qq.com/fsnb/kf-file/upload_wx_media",
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko",
+                    new Dictionary<string, object>
+                    {
+                        { "mid", "fsnb" },
+                        { "media_type", "image" },
+                        { "userid", userid},
+                        { "file", new FormUpload.FileParameter(File.ReadAllBytes(PreviewPath), Path.GetFileName(Path.ChangeExtension(PreviewPath, ".jpg"))) },
+                    }
                 );
             }
             catch (Exception)
@@ -416,19 +427,18 @@ namespace mozjpeg_gui
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string responseText = reader.ReadToEnd();
             reader.Dispose();
-
+            // Debug.Print(responseText);
             JsonObject responseKeyValues = JsonValue.Parse(responseText) as JsonObject;
 
-            if (responseKeyValues["code"] == 0)
+            if (responseKeyValues["result"] == 0)
             {
-                if (MessageBox.Show("上传成功！\r\n" + responseKeyValues["url"] + "\r\n\r\n是否要将链接复制到剪贴板？", "", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes) 
-                {
-                    Clipboard.SetText(responseKeyValues["url"]);
-                }
+                string url = new Uri(HttpUtility.UrlDecode(responseKeyValues["KfPicUrl"])).GetLeftPart(UriPartial.Path);
+                Clipboard.SetText(url);
+                MessageBox.Show("上传成功！链接已复制到剪贴板。\r\n\r\n" + url, "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("上传失败。", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("上传失败，可能是图片过大，请降低压缩质量或图片尺寸后重试。", "", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
         }

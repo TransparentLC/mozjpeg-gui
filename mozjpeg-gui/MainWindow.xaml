@@ -8,7 +8,7 @@
         Loaded="Window_Loaded"
         Closed="Window_Closed"
         Drop="Window_Drop"
-        Title="MozJPEG-GUI" Height="700" Width="840" FontSize="14" MinWidth="960" MinHeight="800" WindowStartupLocation="CenterScreen" AllowDrop="True">
+        Title="MozJPEG-GUI" Height="700" Width="840" FontSize="14" MinWidth="960" MinHeight="800" WindowStartupLocation="CenterScreen" AllowDrop="True" Background="White">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -31,7 +31,7 @@
             <ScrollViewer x:Name="ScrollViewer_Picturebox" Margin="10,10,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Image x:Name="Image_PictureBox" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0" Stretch="Fill" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" Width="0" Height="0"/>
             </ScrollViewer>
-            <Label x:Name="Label_ImageInfo" Margin="10,10,0,10" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI v1.3 by ✨小透明・宸✨"/>
+            <Label x:Name="Label_ImageInfo" Margin="10,10,0,10" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI v1.3.1 by ✨小透明・宸✨"/>
         </Grid>
         <Label Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="MozJPEG-GUI" FontSize="24"/>
         <Button x:Name="Button_OpenImage" Content="打开图片" Grid.Column="1" Margin="10,55,0,0" VerticalAlignment="Top" Click="Button_OpenImage_Click" Width="112" HorizontalAlignment="Left"/>
