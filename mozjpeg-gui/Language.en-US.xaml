@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:mozjpeg_gui">
+    <sys:String x:Key="SwitchLanguage">简体中文</sys:String>
+    <sys:String x:Key="OpenImage">Open image</sys:String>
+    <sys:String x:Key="BatchProcessing">Batching</sys:String>
+    <sys:String x:Key="Readme">Readme / GitHub repo</sys:String>
+    <sys:String x:Key="Encoder">Encoder</sys:String>
+    <sys:String x:Key="EncoderConfig">Config</sys:String>
+    <sys:String x:Key="EncoderConfigQuality">Quality</sys:String>
+    <sys:String x:Key="EncoderConfigSmooth">Smooth</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormat">Format</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatBaseLine">Baseline</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatProgressiveMono">Progressive &amp; Monochrome</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatProgressiveInterleaved">Progressive &amp; Interleaved</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatProgressiveNonInterleaved">Progressive &amp; Non-interleaved</sys:String>
+    <sys:String x:Key="EncoderConfigColorSampling">Color sample</sys:String>
+    <sys:String x:Key="EncoderConfigQuantTable">Quant table</sys:String>
+    <sys:String x:Key="EncoderConfigFilter">Filter (Lossy)</sys:String>
+    <sys:String x:Key="EncoderConfigPreset">Preset (Lossy)</sys:String>
+    <sys:String x:Key="EncoderConfigLossless">Lossless encoding</sys:String>
+    <sys:String x:Key="EncoderConfigLowMemory">Reduce memory usage</sys:String>
+    <sys:String x:Key="EncoderConfigSharpYUV">Sharper YUV conversion</sys:String>
+    <sys:String x:Key="ResizeConfig">Resize</sys:String>
+    <sys:String x:Key="ResizeConfigWidth">Width</sys:String>
+    <sys:String x:Key="ResizeConfigHeight">Height</sys:String>
+    <sys:String x:Key="ResizeConfigPercentage">Percent</sys:String>
+    <sys:String x:Key="ResizeConfigMode">Mode</sys:String>
+    <sys:String x:Key="ResizeConfigModeBicubic">Bicubic</sys:String>
+    <sys:String x:Key="ResizeConfigModeBilinear">Bilinear</sys:String>
+    <sys:String x:Key="ResizeConfigModeNearestNeighbor">Nearest Neighbor</sys:String>
+    <sys:String x:Key="ResizeConfigBatch">Batching</sys:String>
+    <sys:String x:Key="ResizeConfigBatchResizeByPercentage">Resize by percentage</sys:String>
+    <sys:String x:Key="ResizeConfigBatchResizeByWidth">Resize by width</sys:String>
+    <sys:String x:Key="ResizeConfigBatchResizeByHeight">Resize by height</sys:String>
+    <sys:String x:Key="ResizeConfigKeepAspectRatio">Keep aspect ratio</sys:String>
+    <sys:String x:Key="PreviewConfig">Preview</sys:String>
+    <sys:String x:Key="PreviewConfigCreatePreview">Encoded</sys:String>
+    <sys:String x:Key="PreviewConfigShowOriginal">Original</sys:String>
+    <sys:String x:Key="PreviewConfigDisplayRatio">Display ratio</sys:String>
+    <sys:String x:Key="UploadToPublic">Upload image</sys:String>
+    <sys:String x:Key="SaveToLocal">Save image</sys:String>
+    <sys:String x:Key="TooltipUploadToPublic">Upload the compressed image to free image hosting service (ae01.alicdn.com).</sys:String>
+    <sys:String x:Key="TooltipBatchProcessing">Compress all images in a folder with current config.</sys:String>
+    <sys:String x:Key="TooltipBatchLowMemory">Reduce memory usage of lossy encoding. This will make the encoding slower and the output slightly different in size and distortion.</sys:String>
+    <sys:String x:Key="TooltipBatchSharpYUV">Use more accurate and sharper RGB->YUV conversion if needed. Note that this process is slower than the default &quot;fast&quot; RGB->YUV conversion.</sys:String>
+    <sys:String x:Key="UnsupportedFormat">Unsupported format.</sys:String>
+    <sys:String x:Key="UnableToConnect">Unable to connect to the server.</sys:String>
+    <sys:String x:Key="UploadSuccess" xml:space="preserve">Image uploaded!&#x0d;&#x0a;{0}&#x0d;&#x0a;&#x0d;&#x0a;The URL has been copied to clipboard.</sys:String>
+    <sys:String x:Key="UploadFailed">Failed to upload.</sys:String>
+    <sys:String x:Key="UnnecessaryResizing">New size is larger then the original image, so the resizing is unnecessary. Are you sure to continue?</sys:String>
+    <sys:String x:Key="LoadImageTooLarge" xml:space="preserve">The image is too large and application will hang for a while. Are you sure to continue?</sys:String>
+    <sys:String x:Key="BatchSelectFolder">Select folder with images for batching.</sys:String>
+    <sys:String x:Key="BatchConfirm">The {1} images in {0} will be compressed. Are you sure to continue?</sys:String>
+    <sys:String x:Key="BatchComplete" xml:space="preserve">Complete!&#x0d;&#x0a;The compressed files are saved in "mozjpeg-converted" folder.</sys:String>
+
+</ResourceDictionary>

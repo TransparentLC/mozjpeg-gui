@@ -6,6 +6,10 @@
 
 运行前请确定已经在电脑上安装了 .NET Framework 4.0。
 
+A simple image compressor / GUI wrapper of [MozJPEG](https://github.com/mozilla/mozjpeg) and [libwebp](https://developers.google.com/speed/webp/docs/cwebp).
+
+.NET Framework 4.0 is required to run this application.
+
 ### 使用截图
 
 ![](https://ae01.alicdn.com/kf/H7f9532591a78404b965f2b02a28b1529a.png)

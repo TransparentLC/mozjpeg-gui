@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -39,6 +40,7 @@ namespace mozjpeg_gui
 		public BitmapImage ImageResizedBitmap;
 		public BitmapImage PreviewBitmap;
         public bool IgnoreLargeImageWarning = false;
+        public string CurrentLanguage = "zh-CN";
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -48,6 +50,14 @@ namespace mozjpeg_gui
             File.WriteAllBytes(CjpegPath, mozjpeg_gui.Properties.Resources.cjpeg);
             File.WriteAllBytes(CwebpPath, mozjpeg_gui.Properties.Resources.cwebp);
             File.WriteAllBytes(DwebpPath, mozjpeg_gui.Properties.Resources.dwebp);
+
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Label_ImageInfo.Content = string.Format(
+                "MozJPEG-GUI v{0}.{1}.{2} by TransparentLC",
+                versionInfo.FileMajorPart,
+                versionInfo.FileMinorPart,
+                versionInfo.FileBuildPart
+            );
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -69,7 +79,7 @@ namespace mozjpeg_gui
 			}
 			else
 			{
-				MessageBox.Show("不支持的文件格式。", this.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show((string)TryFindResource("UnsupportedFormat"), this.Title, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -104,7 +114,6 @@ namespace mozjpeg_gui
             {
                 BitmapEncoder encoder = new BmpBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(new Uri(source)));
-
                 using (var fileStream = new FileStream(destination, FileMode.Create))
                 {
                     encoder.Save(fileStream);
@@ -137,7 +146,7 @@ namespace mozjpeg_gui
 			ImagePath = Path.GetTempPath() + Guid.NewGuid() + ".bmp";
 			SaveBMPImage(path, ImagePath);
 			ImageFileLength = (new FileInfo(path)).Length;
-			Label_ImageInfo.Content = FormatFileSize(ImageFileLength) + " (原图)";
+			Label_ImageInfo.Content = FormatFileSize(ImageFileLength) + " (Original)";
 
 			ImageBitmap = new BitmapImage();
 			ImageBitmap.BeginInit();
@@ -394,53 +403,43 @@ namespace mozjpeg_gui
             //         break;
             // }
 
+            Dictionary<string, object> postParam = new Dictionary<string, object>
+            {
+                { "scene", "productImageRule" },
+                { "name", Path.GetFileName(Path.ChangeExtension(PreviewPath, ".jpg")) },
+                { "file", new FormUpload.FileParameter(File.ReadAllBytes(PreviewPath)) }
+            };
+
             HttpWebResponse response;
             try
             {
-                string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                StringBuilder useridBuilder = new StringBuilder();
-                Random random = new Random();
-                useridBuilder.Append("kf");
-                for (int i = 0; i < 16; i++) useridBuilder.Append(chars[random.Next(chars.Length)]);
-                useridBuilder.Append("_");
-                for (int i = 0; i < 2; i++) useridBuilder.Append(chars[random.Next(chars.Length)]);
-                string userid = useridBuilder.ToString();
-                
                 response = FormUpload.MultipartFormDataPost(
-                    "https://yzf.qq.com/fsnb/kf-file/upload_wx_media",
-                    "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko",
-                    new Dictionary<string, object>
-                    {
-                        { "mid", "fsnb" },
-                        { "media_type", "image" },
-                        { "userid", userid},
-                        { "file", new FormUpload.FileParameter(File.ReadAllBytes(PreviewPath), Path.GetFileName(Path.ChangeExtension(PreviewPath, ".jpg"))) },
-                    }
+                    "https://kfupload.alibaba.com/mupload",
+                    "iAliexpress/6.22.1 (iPhone; iOS 12.1.2; Scale/2.00)",
+                    postParam
                 );
             }
             catch (Exception)
             {
-                MessageBox.Show("无法连接到服务器，请检查网络连接。", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show((string)TryFindResource("UnableToConnect"), "", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string responseText = reader.ReadToEnd();
             reader.Dispose();
-            // Debug.Print(responseText);
+
             JsonObject responseKeyValues = JsonValue.Parse(responseText) as JsonObject;
 
-            if (responseKeyValues["result"] == 0)
+            if (responseKeyValues["code"] == 0)
             {
-                string url = new Uri(HttpUtility.UrlDecode(responseKeyValues["KfPicUrl"])).GetLeftPart(UriPartial.Path);
-                Clipboard.SetText(url);
-                MessageBox.Show("上传成功！链接已复制到剪贴板。\r\n\r\n" + url, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                Clipboard.SetText(responseKeyValues["url"]);
+                MessageBox.Show(string.Format((string)TryFindResource("UploadSuccess"), (string)responseKeyValues["url"]), "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("上传失败，可能是图片过大，请降低压缩质量或图片尺寸后重试。", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show((string)TryFindResource("UploadFailed"), "", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
         }
 
         private void Slider_MozJPEG_Quality_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -510,11 +509,11 @@ namespace mozjpeg_gui
 			if (ImagePath == "") return;
             if (Convert.ToDouble(TextBox_Scale.Text) > 100)
             {
-                if (MessageBox.Show("图片尺寸大于原图，会进行不必要的缩放，使图片清晰度降低，确定要继续吗？", this.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) return;
+                if (MessageBox.Show((string)TryFindResource("UnnecessaryResizing"), this.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) return;
             }
             if ((Convert.ToInt32(TextBox_Width.Text) > 4000 || Convert.ToInt32(TextBox_Height.Text) > 4000) && !IgnoreLargeImageWarning)
 			{
-                if (MessageBox.Show("图片尺寸较大，预览将会使程序卡住一段时间，确定要继续吗？\n（选择“是”后将不再提示）", this.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) return;
+                if (MessageBox.Show((string)TryFindResource("LoadImageTooLarge"), this.Title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) return;
                 IgnoreLargeImageWarning = true;
 			}
 			CreateResizedImage();
@@ -526,14 +525,14 @@ namespace mozjpeg_gui
             if (ImagePath == "") return;
 			CreateResizedImage();
 			Image_PictureBox.Source = ImageResizedBitmap;
-			Label_ImageInfo.Content = FormatFileSize(ImageFileLength) + " (原图)";
+			Label_ImageInfo.Content = FormatFileSize(ImageFileLength) + " (Original)";
 		}
 
         private void Button_OpenDirectory_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog browserDialog = new System.Windows.Forms.FolderBrowserDialog
             {
-                Description = "选择要进行批处理的文件夹。"
+                Description = (string)TryFindResource("BatchSelectFolder")
             };
             if (browserDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
@@ -541,7 +540,7 @@ namespace mozjpeg_gui
             string[] extension = { ".bmp", ".jpg", ".jpeg", ".png", ".gif", "*.webp" };
             int count = 0;
             foreach (FileInfo file in directoryInfo.GetFiles()) if (extension.Contains(file.Extension.ToLower())) count++;
-            if (MessageBox.Show(string.Format("将对{0}的{1}张图片进行批量转换，准备好了吗？", browserDialog.SelectedPath, count), this.Title, MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK) return;
+            if (MessageBox.Show(string.Format((string)TryFindResource("BatchConfirm"), browserDialog.SelectedPath, count), this.Title, MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK) return;
 
             Directory.CreateDirectory(browserDialog.SelectedPath + "\\mozjpeg-converted");
 
@@ -610,7 +609,7 @@ namespace mozjpeg_gui
                 File.Delete(BatchImageResizedPath);
             }
 
-            MessageBox.Show("批量转换完成！\n转换后的文件保存在转换目录的mozjpeg-converted文件夹中。", this.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show((string)TryFindResource("BatchComplete"), this.Title, MessageBoxButton.OK, MessageBoxImage.Information);
             browserDialog.Dispose();
         }
 
@@ -632,6 +631,25 @@ namespace mozjpeg_gui
                     GroupBox_libWebP_Config.Visibility = Visibility.Visible;
                     break;
             }
+        }
+
+        private void Button_Language_Click(object sender, RoutedEventArgs e)
+        {
+            switch (CurrentLanguage) 
+            {
+                case "zh-CN":
+                    CurrentLanguage = "en-US";
+                    break;
+                case "en-US":
+                    CurrentLanguage = "zh-CN";
+                    break;
+            }
+            ResourceDictionary rd = new ResourceDictionary
+            {
+                Source = new Uri(@"Language." + CurrentLanguage + ".xaml", UriKind.Relative)
+            };
+            Resources.MergedDictionaries.Clear();
+            Resources.MergedDictionaries.Add(rd);
         }
     }
 }

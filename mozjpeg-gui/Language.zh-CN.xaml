@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:mozjpeg_gui">
+    <sys:String x:Key="SwitchLanguage">English Version</sys:String>
+    <sys:String x:Key="OpenImage">打开图片</sys:String>
+    <sys:String x:Key="BatchProcessing">批处理</sys:String>
+    <sys:String x:Key="Readme">查看使用说明 / GitHub仓库</sys:String>
+    <sys:String x:Key="Encoder">编码工具</sys:String>
+    <sys:String x:Key="EncoderConfig">编码设定</sys:String>
+    <sys:String x:Key="EncoderConfigQuality">图片质量</sys:String>
+    <sys:String x:Key="EncoderConfigSmooth">平滑</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormat">图片格式</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatBaseLine">基本式</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatProgressiveMono">渐进式（去色）</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatProgressiveInterleaved">渐进式（交错）</sys:String>
+    <sys:String x:Key="EncoderConfigImageFormatProgressiveNonInterleaved">渐进式（非交错）</sys:String>
+    <sys:String x:Key="EncoderConfigColorSampling">图片格式</sys:String>
+    <sys:String x:Key="EncoderConfigQuantTable">量化表</sys:String>
+    <sys:String x:Key="EncoderConfigFilter">滤波（仅有损编码）</sys:String>
+    <sys:String x:Key="EncoderConfigPreset">预设（仅有损编码）</sys:String>
+    <sys:String x:Key="EncoderConfigLossless">无损编码</sys:String>
+    <sys:String x:Key="EncoderConfigLowMemory">降低内存占用（仅有损编码）</sys:String>
+    <sys:String x:Key="EncoderConfigSharpYUV">精确色域转换（仅有损编码）</sys:String>
+    <sys:String x:Key="ResizeConfig">缩放设定</sys:String>
+    <sys:String x:Key="ResizeConfigWidth">宽度</sys:String>
+    <sys:String x:Key="ResizeConfigHeight">高度</sys:String>
+    <sys:String x:Key="ResizeConfigPercentage">百分比</sys:String>
+    <sys:String x:Key="ResizeConfigMode">缩放算法</sys:String>
+    <sys:String x:Key="ResizeConfigModeBicubic">双三次插值</sys:String>
+    <sys:String x:Key="ResizeConfigModeBilinear">双线性插值</sys:String>
+    <sys:String x:Key="ResizeConfigModeNearestNeighbor">临近插值</sys:String>
+    <sys:String x:Key="ResizeConfigBatch">批处理</sys:String>
+    <sys:String x:Key="ResizeConfigBatchResizeByPercentage">按百分比缩放</sys:String>
+    <sys:String x:Key="ResizeConfigBatchResizeByWidth">等比例缩放至宽度</sys:String>
+    <sys:String x:Key="ResizeConfigBatchResizeByHeight">等比例缩放至高度</sys:String>
+    <sys:String x:Key="ResizeConfigKeepAspectRatio">锁定纵横比</sys:String>
+    <sys:String x:Key="PreviewConfig">预览</sys:String>
+    <sys:String x:Key="PreviewConfigCreatePreview">生成预览</sys:String>
+    <sys:String x:Key="PreviewConfigShowOriginal">显示原图</sys:String>
+    <sys:String x:Key="PreviewConfigDisplayRatio">显示比例</sys:String>
+    <sys:String x:Key="UploadToPublic">上传到图床</sys:String>
+    <sys:String x:Key="SaveToLocal">保存图片</sys:String>
+    <sys:String x:Key="TooltipUploadToPublic" xml:space="preserve">将压缩后的图片上传到ae01.alicdn.com。&#x0d;&#x0a;WebP格式的图片需要将文件扩展名修改为常见图片格式后才能上传，因此返回的链接仍然以&quot;.jpg&quot;结尾。</sys:String>
+    <sys:String x:Key="TooltipBatchProcessing">以当前的设定，对某个目录下的文件进行批量转换。</sys:String>
+    <sys:String x:Key="TooltipBatchLowMemory">降低有损压缩时使用的内存大小，增加压缩时间和输出的文件大小。</sys:String>
+    <sys:String x:Key="TooltipBatchSharpYUV">使用精确的RGB->YUV色域转换，轻微增加压缩时间。</sys:String>
+    <sys:String x:Key="UnsupportedFormat">不支持的文件格式。</sys:String>
+    <sys:String x:Key="UnableToConnect">无法连接到服务器，请检查网络连接。</sys:String>
+    <sys:String x:Key="UploadSuccess" xml:space="preserve">上传成功！&#x0d;&#x0a;{0}&#x0d;&#x0a;&#x0d;&#x0a;链接已复制到剪贴板。</sys:String>
+    <sys:String x:Key="UploadFailed">上传失败。</sys:String>
+    <sys:String x:Key="UnnecessaryResizing">图片尺寸大于原图，会进行不必要的缩放，使图片清晰度降低，确定要继续吗？</sys:String>
+    <sys:String x:Key="LoadImageTooLarge" xml:space="preserve">图片尺寸较大，预览将会使程序卡住一段时间，确定要继续吗？&#x0d;&#x0a;（选择“是”后将不再提示）</sys:String>
+    <sys:String x:Key="BatchSelectFolder">选择要进行批处理的文件夹。</sys:String>
+    <sys:String x:Key="BatchConfirm">将对{0}的{1}张图片进行批量转换，准备好了吗？</sys:String>
+    <sys:String x:Key="BatchComplete" xml:space="preserve">批量转换完成！&#x0d;&#x0a;转换后的文件保存在转换目录的mozjpeg-converted文件夹中。</sys:String>
+
+</ResourceDictionary>
