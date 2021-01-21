@@ -17,7 +17,7 @@ A simple image compressor / GUI wrapper of [MozJPEG](https://github.com/mozilla/
 ### 特性
 
 * 只有单个文件，是**绿色版**程序。
-    * `cjpeg.exe` 使用的是来自于 [garyzyg/mozjpeg-windows](https://github.com/garyzyg/mozjpeg-windows/releases) 的预编译版（3.3.1 x64）， `cwebp.exe` 和 `dwebp.exe` 使用的是来自于 [Google 官方](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html)的预编译版（1.0.3 x64）。
+    * `cjpeg.exe` 使用的是来自于 [garyzyg/mozjpeg-windows](https://github.com/garyzyg/mozjpeg-windows/releases) 的预编译版（4.0.0 x64）， `cwebp.exe` 和 `dwebp.exe` 使用的是来自于 [Google 官方](https://storage.googleapis.com/downloads.webmproject.org/releases/webp/index.html)的预编译版（1.1.0 x64）。
     * 以上程序的二进制文件使用了 [UPX](https://github.com/upx/upx) 及参数 `--ultra-brute` 进行了压缩，作为资源文件嵌入到程序本体中，程序启动时会将它们释放到临时目录以在运行时调用，在退出时删除。
 * 支持**打开 PNG 和 WebP 格式**的图片。
     * MozJPEG 只支持输入 TGA、BMP、PPM、JPEG 四种格式的图片，**不支持 PNG**（当然更不可能支持 WebP），程序会自动将打开的图片转换为 BMP，存储在临时目录。
