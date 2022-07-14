@@ -1,5 +1,9 @@
 # MozJPEG-GUI
 
+> ⚠️ 这个项目已经不再维护了。
+>
+> 现在我更推荐使用 Google 推出的在线图像压缩工具 [Squoosh](https://squoosh.app/)，除了 MozJPEG 和 libwebp 还支持 AVIF 和 JPEG XL 等更多格式的编码器，同样也有对压缩前后的图片进行对比的功能。如果你的浏览器支持 PWA（Firefox 用户可以安装 [Progressive Web Apps for Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/pwas-for-firefox/) 扩展），还可以将 Squoosh 安装到本地，在离线状态下也可以使用。
+
 用 C# 和 WPF 折腾的一个使用 [MozJPEG](https://github.com/mozilla/mozjpeg) 以 JPEG 格式压缩图片的 GUI 程序。
 
 **现在也支持调用 [libwebp](https://developers.google.com/speed/webp/docs/cwebp)，将图片压缩为 WebP 格式了！** 不过懒得改名字了……
